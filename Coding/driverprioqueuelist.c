@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "prioqueuelist.h"
-#include "prioqueuelistctk.c"
+#include "prioqueuelist.c"
 
 void PrintQueue(PrioQueue Q){
     address P;

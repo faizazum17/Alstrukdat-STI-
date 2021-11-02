@@ -58,14 +58,46 @@ void CreateQueue(PrioQueue *q){
 }
 
 /*** Primitif Enqueue/Dequeue ***/
-void enqueue(PrioQueue *q, ElType x, int pr);
+void enqueue(PrioQueue *q, ElType x, int pr){
 /* Proses: Mengalokasi x dengan prio pr dan menambahkan x pada q
 jika alokasi berhasil; jika alokasi gagal q tetap */
+    address P;
+    P = newNode(x, pr);
+    if (P != Nil)
+    {
+        if (isEmpty(*q)) ADDR_HEAD(*q) == P;
+        else
+        {
+            address location;
+            location = ADDR_HEAD(*q);
+            if (PRIO(P) < PRIO(location))
+            {
+                NEXT(P) = location;
+                ADDR_HEAD(*q) = P;
+            }
+            else
+            {
+                while((NEXT(location) != Nil) && (PRIO(P) >= PRIO(NEXT(location)))){
+                    location = NEXT(location);
+                }
+                    NEXT(P) = NEXT(location);
+                    NEXT(location) = P;
+            }
+        }
+    }
+}
 
-/* I.S. q mungkin kosong */
-/* F.S. x menjadi elemen q sesuai dengan urutan prioritas */
-void dequeue(PrioQueue *q, ElType *x, int *pr);
+void dequeue(PrioQueue *q, ElType *x, int *pr){
 /* Proses: Menghapus x pada bagian HEAD dari q dan mendealokasi elemen HEAD */
 /* Pada dasarnya operasi deleteFirst */
 /* I.S. q tidak mungkin kosong */
 /* F.S. x = nilai elemen HEAD pd I.S., HEAD "mundur" */
+    address P, delete;
+
+    *pr = PRIO(ADDR_HEAD(*q));
+    *x = HEAD(*q);
+    delete = ADDR_HEAD(*q);
+    P = NEXT(delete);
+    delNode(delete);
+    ADDR_HEAD(*q) = P;
+}
